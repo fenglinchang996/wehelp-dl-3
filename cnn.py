@@ -11,6 +11,8 @@ from torchvision.datasets import ImageFolder
 from torchvision.io import read_image
 from torchvision.transforms import v2
 
+from utils import get_device
+
 
 def check_dataset(dataloader: DataLoader):
     features, labels = next(iter(dataloader))
@@ -22,17 +24,6 @@ def check_dataset(dataloader: DataLoader):
     print(label.item())
     plt.imshow(img, cmap="gray")
     plt.show()
-
-
-def get_device() -> torch.device:
-    device = (
-        acc
-        if (acc := torch.accelerator.current_accelerator(check_available=True))
-        is not None
-        else torch.device("cpu")
-    )
-    print(f"Using {device.type} device")
-    return device
 
 
 transform = v2.Compose(

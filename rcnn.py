@@ -16,6 +16,8 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.transforms import v2 as T
 from torchvision.utils import draw_bounding_boxes
 
+from utils import get_device
+
 WEIGHTS_PATH = Path("rcnn_model.pth")
 
 
@@ -56,17 +58,6 @@ def check_dataset(dataset: VehicleDataset):
     print("Box shape: ", target["boxes"].shape, "Labels: ", target["labels"])
     labels = [dataset.id_to_class[int(label)] for label in target["labels"]]
     draw_image_with_bounding_boxes(image, boxes=target["boxes"], labels=labels)
-
-
-def get_device() -> torch.device:
-    device = (
-        acc
-        if (acc := torch.accelerator.current_accelerator(check_available=True))
-        is not None
-        else torch.device("cpu")
-    )
-    print(f"Using {device.type} device")
-    return device
 
 
 def get_category_mapping():
